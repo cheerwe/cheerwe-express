@@ -35,7 +35,10 @@ Asyn.prototype._runItem = function(item, isEnd) {
         var callback = (function(callback, isEnd, err, data) {
             var ret = true;
             if (callback) {
-                ret = callback(err, data);
+                var args = Array.prototype.slice.call(arguments);
+                args.shift();
+
+                ret = callback.apply(item.scope || this, args);
             }
             this.isRunning = false;
 
