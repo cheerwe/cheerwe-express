@@ -37,6 +37,7 @@ Asyn.prototype._runItem = function(item, isEnd) {
             if (callback) {
                 var args = Array.prototype.slice.call(arguments);
                 args.shift();
+                args.shift();
 
                 ret = callback.apply(item.scope || this, args);
             }
