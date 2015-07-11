@@ -1,0 +1,19 @@
+{
+    "name": "cheerwe-express",
+    "version": "1.0.0",
+    "main": "index.js",
+    "description": "a framework about express-3",
+    "homepage": "https://github.com/cheerwe/cheerwe-express/",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/cheerwe/cheerwe-express"
+    },
+    "keyword": ["cheerwe", "express ", "express-util ", "uuid "],
+    "dependencies": {
+        "cheerwe-util": "1.*"
+    },
+    "author": {
+        "name": "augustus",
+        "email": "cheerwe@126.com"
+    }
+}
