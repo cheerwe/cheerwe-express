@@ -1,6 +1,6 @@
 {
     "name": "cheerwe-express",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "main": "index.js",
     "description": "a framework about express-3",
     "homepage": "https://github.com/cheerwe/cheerwe-express/",

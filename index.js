@@ -1,4 +1,4 @@
 module.exports = {
-    routerHelper: require('./src/router'),
+    helper: require('./src/helper'),
     sync: require('./src/sync')
 };
