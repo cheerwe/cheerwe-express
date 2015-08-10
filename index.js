@@ -1,4 +1,8 @@
+
 module.exports = {
     helper: require('./src/helper'),
-    sync: require('./src/sync')
+    initContext: require('./src/context'),
+    then: function (fn, callback) {
+        return queue.then(fn, callback);
+    }
 };
