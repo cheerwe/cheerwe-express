@@ -21,10 +21,7 @@ var resContext = {
     },
     sendError: function (error) {
         this.sendJson(false, error, error.message);
-    }
-};
-
-var reqContext = {
+    },
     /**
      * 设置PageMode
      * @param pm 需要设置的PageMode，使用覆盖的方式
@@ -36,12 +33,15 @@ var reqContext = {
         } else {
             Util.apply(this.pageMode, pm);
         }
-    },
+    }
+};
+
+var reqContext = {
     /**
      * 获取参数名为ID的URL参数
      */
     getId: function () {
-        return this.params('id');
+        return this.param('id');
     },
     /**
      * 根据mode指定的变量值，获取一个对象
