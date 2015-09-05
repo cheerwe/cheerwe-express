@@ -134,15 +134,14 @@ var helper = {
     },
     resPage: function(req, res, page) {
         var pm = res.pageMode || {};
+        
         pm = Util.apply(pm, {
             Util: Util,
-            userId: req.session.userId,
             errorMsg: res.errorMsg,
             successMsg: res.successMsg
         });
         try {
             res.render(page, pm);
-
         } catch (e) {
             console.log(e.message);
         }
