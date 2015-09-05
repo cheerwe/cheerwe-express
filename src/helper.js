@@ -3,10 +3,10 @@ var Util = require('cheerwe-util'),
 
 
 var helper = {
-    getReqMode: function(req, mode, defMode) {
+    getReqMode: function (req, mode, defMode) {
         var data = {};
         if (nodeUtil.isArray(mode)) {
-            mode.forEach(function(key) {
+            mode.forEach(function (key) {
                 data[key] = req.param(key) || '';
             });
         } else {
@@ -26,16 +26,16 @@ var helper = {
 
         return data;
     },
-    getReqCondition: function(req) {
+    getReqCondition: function (req) {
         var condition = req.param('condition') || '{}';
         condition = eval('(' + condition + ')');
 
         return condition;
     },
-    getReqId: function(req, res) {
+    getReqId: function (req, res) {
         return req.param('id');
     },
-    getPageList: function(req, res, dao, callback) {
+    getPageList: function (req, res, dao, callback) {
         try {
             var config = this.getReqMode(req, ['orderField', 'orderDir', 'pageSize', 'pageIndex']);
             config.condition = req.condition; //这两项数据需要自行组织
@@ -45,7 +45,7 @@ var helper = {
             }
             Util.apply(config.orderby, req.orderby);
 
-            dao.getPageList(config, function(err, rows, total) {
+            dao.getPageList(config, function (err, rows, total) {
                 callback && callback(err, {
                     total: total,
                     rows: rows
@@ -58,7 +58,7 @@ var helper = {
             });
         }
     },
-    getList: function(req, res, dao) {
+    getList: function (req, res, dao) {
         try {
             var config = this.getReqMode(req, ['orderField', 'orderDir', 'pageSize', 'pageIndex']);
             config.condition = req.condition; //这两项数据需要自行组织
@@ -68,7 +68,7 @@ var helper = {
             }
             Util.apply(config.orderby, req.orderby);
 
-            dao.getPageList(config, function(err, rows, total) {
+            dao.getPageList(config, function (err, rows, total) {
                 if (err) {
                     res.send(helper.resFail({
                         total: 0,
@@ -89,9 +89,9 @@ var helper = {
             }, err.message));
         }
     },
-    getMode: function(req, res, dao) {
+    getMode: function (req, res, dao) {
         var id = this.getReqId(req);
-        dao.getMode(id, function(err, mode) {
+        dao.getMode(id, function (err, mode) {
             if (err) {
                 res.send(helper.resFail({}, 'mode get fail'));
             } else {
@@ -99,10 +99,10 @@ var helper = {
             }
         });
     },
-    save: function(req, res, dao) {
+    save: function (req, res, dao) {
         var mode = req.mode;
 
-        dao.save(mode, function(err, ret) {
+        dao.save(mode, function (err, ret) {
             if (err) {
                 res.send(helper.resFail(false, 'save fail'));
             } else {
@@ -110,8 +110,8 @@ var helper = {
             }
         });
     },
-    del: function(req, res, dao) {
-        dao.del(req.param('ids'), function(err, ret) {
+    del: function (req, res, dao) {
+        dao.del(req.param('ids'), function (err, ret) {
             if (err) {
                 res.send(helper.resFail(false, 'del fail'));
             } else {
@@ -119,22 +119,36 @@ var helper = {
             }
         });
     },
-    resJson: function(succ, data, msg) {
+    resJson: function (succ, data, msg) {
         return {
             success: succ,
             msg: msg || '',
             data: data || null
         };
     },
-    resFail: function(data, msg) {
+    resFail: function (data, msg) {
         return helper.resJson(false, data, msg);
     },
-    resSucc: function(data, msg) {
+    resSucc: function (data, msg) {
         return helper.resJson(true, data, msg);
     },
-    resPage: function(req, res, page) {
+    resPage: function (req, res, page) {
         var pm = res.pageMode || {};
-        
+        pm = Util.apply(pm, {
+            Util: Util,
+            userId: req.session.userId,
+            errorMsg: res.errorMsg,
+            successMsg: res.successMsg
+        });
+        try {
+            res.render(page, pm);
+
+        } catch (e) {
+            console.log(e.message);
+        }
+    },
+    renderPage: function (res, page) {
+        var pm = res.pageMode || {};
         pm = Util.apply(pm, {
             Util: Util,
             errorMsg: res.errorMsg,
@@ -142,6 +156,7 @@ var helper = {
         });
         try {
             res.render(page, pm);
+
         } catch (e) {
             console.log(e.message);
         }
